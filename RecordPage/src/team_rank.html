@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./team_rank.css">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Mochiy+Pop+One&family=Noto+Sans+JP&family=Zen+Antique&display=swap" rel="stylesheet">
+
+    <!-- html2canvas -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="logo_container">
+            <img class="logo" src="../assets/logo.png?raw=true">
+            <img class="logo" src="../assets/season_1.png?raw=true">
+        </div>
+        <div class="table_container"></div>
+    </div>
+
+    <button class="save_image" id="save_image">画像保存</button>
+    <a id="get_image" href="" style="display: none"></a>
+
+    <script>
+        // ダウンロード処理
+        const output_button = $("#save_image");    //ボタン
+        const element = $(".container")[0];        //画像化したい要素
+        const get_image = $("#get_image")[0];      //ダウンロード用隠しリンク
+
+        // 画像化してダウンロード
+        output_button.on('click', () => {
+            html2canvas(element, {proxy: true, useCORS: true}).then(canvas => {
+                get_image.setAttribute("href", canvas.toDataURL());
+                get_image.setAttribute("download", "team_rank.png");
+                get_image.click();
+            });
+        });
+
+        let api_url = "https://script.google.com/macros/s/AKfycbzmPmfxcPp32s_ac6iLvqlzTE0Gjz-x6Mj7yB02r9lnFd0724UV8YySiWgQ6Xpbqy4uBA/exec?api=team_rank"
+
+        // APIを叩く
+        fetch(api_url)
+            .then(function(fetch_data) {
+                return fetch_data.json();
+            })
+            .then(function(json) {
+                makeTable(json)
+            });
+
+        // テーブル部分を作成
+        // tableタグだと実装が難しいため使わない
+        function makeTable(data) {
+            let table_div = $('.table_container');
+            let html_data = "";
+
+            let header = "<div class='header'>" +
+                "<span class='h_rank'>RANK</span>" +
+                "<span class='h_team'>TEAM NAME</span>" +
+                "<span class='h_total'>TOTAL</span>" +
+                "<span class='h_today'>TODAY</span>" +
+                "<span class='h_diff'>DIFF</span>" +
+                "</div>";
+            html_data += header;
+
+            let body = "<div class='body'>"
+            for (let i in data) {
+                // ポイントに符号追加
+                let today_point;
+                if (data[i].todayPoint >= 0) {
+                    today_point = "+" + data[i].todayPoint.toFixed(1);
+                }
+                else {
+                    today_point = data[i].todayPoint.toFixed(1);
+                }
+
+                // 1位のチームは―表記
+                let diff_point;
+                if (i == 0) {
+                    diff_point = "―";
+                }
+                else {
+                    diff_point = data[i].diffPoint.toFixed(1);
+                }
+
+                // 前回の順位によって矢印と文字色変更
+                let arrow_img;
+                if (data[i].beforeRank < data[i].rank) {
+                    arrow_img = "../assets/rank_down.png";
+                }
+                else if (data[i].beforeRank > data[i].rank) {
+                    arrow_img = "../assets/rank_up.png";
+                }
+                else {
+                    arrow_img = "../assets/rank_no_change.png";
+                }
+
+                body += "<div class='row'>" +
+                    "<img class='team_img' src='" + data[i].teamImageUrl + "'>" +
+                    "<div class='before_rank'>" + data[i].beforeRank + "</div>" +
+                    "<img class='arrow' src='" + arrow_img + "'>" +
+                    "<div class='rank'>" + data[i].rank + "</div>" +
+                    "<div class='total'>" + data[i].totalPoint + "</div>" +
+                    "<div class='today_point'>" + today_point + "</div>" +
+                    "<div class='diff'>" + diff_point + "</div>" +
+                    "</div>";
+            }
+
+            body += "</div>";
+            html_data += body;
+
+            table_div.append(html_data);
+        }
+    </script>
+</body>
+</html>

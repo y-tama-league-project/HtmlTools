@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./match_result.css">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Mochiy+Pop+One&family=Noto+Sans+JP&family=Zen+Antique&display=swap" rel="stylesheet">
+
+    <!-- html2canvas -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="title"></div>
+        <div class="table_container"></div>
+    </div>
+
+    <button class="save_image" id="save_image">画像保存</button>
+    <a id="get_image" href="" style="display: none"></a>
+
+    <script>
+        // ダウンロード処理
+        const output_button = $("#save_image");    //ボタン
+        const element = $(".container")[0];        //画像化したい要素
+        const get_image = $("#get_image")[0];      //ダウンロード用隠しリンク
+
+        // 画像化してダウンロード
+        output_button.on('click', () => {
+            html2canvas(element, {proxy: true, useCORS: true}).then(canvas => {
+                get_image.setAttribute("href", canvas.toDataURL());
+                get_image.setAttribute("download", "match_result.png");
+                get_image.click();
+            });
+        });
+
+        // パラメータを取得してスプレッドシートから取得する試合結果の範囲を指定する
+        let url = new URL(window.location.href);
+        let params = url.searchParams;
+        let match = params.get('match');
+        let table = params.get('table');
+        switch(table) {
+            case "A":
+                table = 1;
+                break;
+            case "B":
+                table = 2;
+                break;
+            // TODO: 2シーズン目からはC卓も考慮すること
+        }
+        // エラー処理
+        if (!match || !table) {
+            alert("URLに'match'および'table'パラメータを入力してください。");
+            throw new Error();
+        }
+
+        let api_url = "https://script.google.com/macros/s/AKfycbzwq43XfPGY2x3FGmvA-gI7CcQ9tD5x7zRbNCca10xqkF0gFyphSj82i1gn1SSULNspbA/exec?api=match_result";
+        
+        // APIを叩く
+        fetch(api_url)
+            .then(function(fetch_data) {
+                return fetch_data.json();
+            })
+            .then(function(json) {
+                let section_num;
+                let match_num;
+                let table_num;
+                let table_data = [];
+
+                // 必要な試合分だけのデータに間引く
+                for (let i in json) {
+                    // 第1試合A卓以外は無視する
+                    if (!(json[i].match == match && json[i].table == table)) { continue }
+
+                    section_num = json[i].section;
+                    match_num = json[i].match;
+                    table_num = json[i].table;
+                    table_data.push(json[i]);
+                }
+
+                makeTitle(section_num, match_num, table_num);
+                makeTable(table_data);
+            });
+
+        // タイトル部分を作成
+        function makeTitle(section_num, match_num, table_num) {
+            let title = $(".title");
+            let html_data = "<div>";
+
+            let table_choice;
+            switch(table_num) {
+                case 1:
+                    table_choice = "配信卓";
+                    break;
+                case 2:
+                    table_choice = "裏卓";
+                    break;
+            }
+
+            html_data += "第<span class='title_number'>" + section_num + "</span>節";
+            html_data += "</div>";
+            html_data += "<div>";
+            html_data += "第<span class='title_number'>" + match_num + "</span>試合";
+            html_data += "</div>";
+            html_data += "<div>" + table_choice +"結果</div>";
+
+            title.append(html_data);
+        }
+
+        // テーブル部分を作成
+        function makeTable(data) {
+            let table_div = $('.table_container');
+            let html_data = "<table>";
+
+            // thead作成
+            let header = "<thead><tr>" +
+                "<th class='width50'></th>" +
+                "<th class='width15'>順位</th>" +
+                "<th class='width20'>最終持ち点</th>" +
+                "<th class='width15'>ポイント</th>" +
+                "</tr></thead>";
+            html_data += header;
+
+            // tbody作成
+            let body = "<tbody>";
+            for (let i=0; i < data.length; i++) {
+                let row = data[i];
+
+                let point;
+                if (row.point >= 0) {
+                    point = "+" + row.point.toFixed(1);
+                }
+                else{
+                    point = row.point.toFixed(1);
+                }
+
+                body += "<tr>";
+                body += "<td><img class='player_img' src='" + row.playerImageUrl + "'></td>";
+                body += "<td class='rank'><span class='number'>" + row.rank + "</span></td>";
+                body += "<td class='score'><span class='number mg_r_score'>" + row.score + "</span></td>";
+                body += "<td class='point'><span class='number mg_r_point'>" + point + "</span></td>";
+                body += "</tr>";
+            }
+            body += "</tbody>";
+            html_data += body;
+
+            table_div.append(html_data);
+        }
+    </script>
+</body>
+</html> 
