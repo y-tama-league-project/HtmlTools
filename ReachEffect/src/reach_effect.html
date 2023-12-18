@@ -49,6 +49,7 @@
         });
 
         animation1.onComplete = () => {
+            animation1.destroy();
             animation2.play();
         }
 
