@@ -18,6 +18,10 @@
             overflow: hidden;
             text-align: center;
         }
+
+        #lottie2 {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -49,6 +53,7 @@
 
         animation1.onComplete = () => {
             lottie_1.style.display = "none";
+            lottie_2.style.display = "block";
             animation2.play();
         }
 
