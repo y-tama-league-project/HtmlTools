@@ -19,7 +19,6 @@
             overflow: hidden;
             text-align: center;
         }
-
     </style>
 </head>
 <body>
@@ -35,7 +34,7 @@
             container: lottie_dom,
             renderer: 'svg',
             loop: false,
-            autoplay: false,
+            autoplay: true,
             path: '../assets/effect1.json',
             name: "effect1"
         });
@@ -49,7 +48,10 @@
             name: "effect2"
         });
 
-        animation1.play();
+        animation1.onComplete = () => {
+            animation2.play();
+        }
+
     </script>
 </body>
 </html>
