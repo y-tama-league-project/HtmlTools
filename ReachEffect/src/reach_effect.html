@@ -43,15 +43,14 @@
             container: lottie_dom,
             renderer: 'svg',
             loop: true,
-            autoplay: false,
+            autoplay: true,
             path: '../assets/effect2.json',
             name: "effect2"
         });
 
-        animation1.onComplete = () => {
-            animation1.destroy();
-            animation2.play();
-        }
+        // animation1.onComplete = () => {
+        //     animation2.play();
+        // }
 
     </script>
 </body>
