@@ -22,16 +22,16 @@
     </style>
 </head>
 <body>
-    <div id="lottie">
-
-    </div>
+    <div id="lottie1"></div>
+    <div id="lottie2"></div>
 
     <script>
-        let lottie_dom = document.getElementById('lottie');
+        let lottie_1 = document.getElementById('lottie1');
+        let lottie_2 = document.getElementById('lottie2');
 
         // 前半
         let animation1 = lottie.loadAnimation({
-            container: lottie_dom,
+            container: lottie_1,
             renderer: 'svg',
             loop: false,
             autoplay: true,
@@ -40,17 +40,18 @@
         });
         // 後半
         let animation2 = lottie.loadAnimation({
-            container: lottie_dom,
+            container: lottie_2,
             renderer: 'svg',
             loop: true,
-            autoplay: true,
+            autoplay: false,
             path: '../assets/effect2.json',
             name: "effect2"
         });
 
-        // animation1.onComplete = () => {
-        //     animation2.play();
-        // }
+        animation1.onComplete = () => {
+            lottie_1.style.display = "none";
+            animation2.play();
+        }
 
     </script>
 </body>
