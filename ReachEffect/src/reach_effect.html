@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <!-- <title>Lottieサンプル</title> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- <link rel="stylesheet" href="./waitama.css"> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+    <div id="lottie">
+
+    </div>
+
+    <script>
+        let lottie_dom = document.getElementById('lottie');
+
+        // 前半
+        let animation1 = lottie.loadAnimation({
+            container: lottie_dom,
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            path: '../assets/effect1.json',
+            name: "effect1"
+        });
+        // 後半
+        let animation2 = lottie.loadAnimation({
+            container: lottie_dom,
+            renderer: 'svg',
+            loop: true,
+            autoplay: false,
+            path: '../assets/effect2.json',
+            name: "effect2"
+        });
+
+        animation1.play();
+    </script>
+</body>
+</html>
