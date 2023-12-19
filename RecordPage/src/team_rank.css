@@ -4,8 +4,8 @@
 }
 
 .container {
-    width:1600px;
-    height: 900px;
+    width:1920px;
+    height: 1080px;
     aspect-ratio: 16/9;
     background-image: url(../assets/background.jpg?raw=true);
 }
@@ -19,8 +19,12 @@
     height: 130px;
 }
 
+.table_container {
+    padding-top: 10px;
+}
+
 .header {
-    width: 80%;
+    width: 1537px;
     height: 50px;
     background-color: #333333;
     color: #ffffff;
@@ -35,19 +39,19 @@
 }
 
 .h_team {
-    margin-left: 240px;
+    margin-left: 350px;
 }
 
 .h_total {
-    margin-left: 150px;
+    margin-left: 250px;
 }
 
 .h_today {
-    margin-left: 120px;
+    margin-left: 140px;
 }
 
 .h_diff {
-    margin-left: 100px;
+    margin-left: 116px;
 }
 
 .body {
@@ -58,18 +62,17 @@
 
 .row {
     position: relative;
-    height: 56px;
+    height: 76px;
     font-family: 'Noto Sans JP', sans-serif;
-    font-size: 42px;
     font-weight: bold;
     color: #ffffff;
     text-shadow: 2px 2px 2px #22215f;
-    margin-top: 2px;
+    margin-top: 8px;
 }
 
 .team_img {
     position: absolute;
-    width: 90%;
+    width: auto;
     height: auto;
 }
 
@@ -78,50 +81,53 @@
     width: 3%;
     left: 20px;
     bottom: 4px;
-    text-align: right;
-    font-size: 32px;
+    text-align: center;
+    font-size: 38px;
 }
 
 .arrow {
     position: absolute;
     display: block;
-    width: 28px;
+    width: 36px;
     height: auto;
-    left: 84px;
-    bottom: 8px;
+    left: 82px;
+    bottom: 10px;
 }
 
 .rank {
     position: absolute;
     width: 5%;
-    left: 94px;
-    text-align: right;
+    left: 120px;
+    bottom: 0px;
+    text-align: center;
+    font-size: 48px;
 }
 
 .total {
     position: absolute;
     width: 15%;
-    left: 620px;
+    left: 810px;
     text-align: right;
+    font-size: 50px;
 }
 
 .today_point {
     position: absolute;
     width: 15%;
-    left: 822px;
-    top: 12px;
+    left: 1022px;
+    top: 16px;
     text-align: right;
-    font-size: 32px;
+    font-size: 38px;
     vertical-align: bottom;
 }
 
 .diff {
     position: absolute;
     width: 15%;
-    left: 1004px;
-    top: 12px;
+    left: 1218px;
+    top: 16px;
     text-align: right;
-    font-size: 32px;
+    font-size: 38px;
     vertical-align: bottom;
 }
 

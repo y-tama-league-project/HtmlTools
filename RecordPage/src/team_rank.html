@@ -18,10 +18,6 @@
 </head>
 <body>
     <div class="container">
-        <div class="logo_container">
-            <img class="logo" src="../assets/logo.png?raw=true">
-            <img class="logo" src="../assets/season_1.png?raw=true">
-        </div>
         <div class="table_container"></div>
     </div>
 
@@ -91,10 +87,16 @@
 
                 // 前回の順位によって矢印と文字色変更
                 let arrow_img;
-                if (data[i].beforeRank < data[i].rank) {
+                let before_rank = data[i].beforeRank;
+                if (before_rank == 0) {
+                    // 第1節は前回の順位は"-"と表示する
+                    arrow_img = "../assets/rank_no_change.png";
+                    before_rank = "-";
+                }
+                else if (before_rank < data[i].rank) {
                     arrow_img = "../assets/rank_down.png";
                 }
-                else if (data[i].beforeRank > data[i].rank) {
+                else if (before_rank > data[i].rank) {
                     arrow_img = "../assets/rank_up.png";
                 }
                 else {
@@ -103,7 +105,7 @@
 
                 body += "<div class='row'>" +
                     "<img class='team_img' src='" + data[i].teamImageUrl + "'>" +
-                    "<div class='before_rank'>" + data[i].beforeRank + "</div>" +
+                    "<div class='before_rank'>" + before_rank + "</div>" +
                     "<img class='arrow' src='" + arrow_img + "'>" +
                     "<div class='rank'>" + data[i].rank + "</div>" +
                     "<div class='total'>" + data[i].totalPoint + "</div>" +
