@@ -52,7 +52,9 @@
             case "B":
                 table = 2;
                 break;
-            // TODO: 2シーズン目からはC卓も考慮すること
+            case "C":
+                table = 3;
+                break;
         }
         // エラー処理
         if (!match || !table) {
@@ -61,7 +63,7 @@
         }
 
         let api_url = "https://script.google.com/macros/s/AKfycbzwq43XfPGY2x3FGmvA-gI7CcQ9tD5x7zRbNCca10xqkF0gFyphSj82i1gn1SSULNspbA/exec?api=match_result";
-        
+
         // APIを叩く
         fetch(api_url)
             .then(function(fetch_data) {
@@ -99,7 +101,10 @@
                     table_choice = "配信卓";
                     break;
                 case 2:
-                    table_choice = "裏卓";
+                    table_choice = "裏B卓";
+                    break;
+                case 3:
+                    table_choice = "裏C卓";
                     break;
             }
 
@@ -120,10 +125,10 @@
 
             // thead作成
             let header = "<thead><tr>" +
-                "<th class='width50'></th>" +
+                "<th class='width45'></th>" +
                 "<th class='width15'>順位</th>" +
                 "<th class='width20'>最終持ち点</th>" +
-                "<th class='width15'>ポイント</th>" +
+                "<th class='width20'>ポイント</th>" +
                 "</tr></thead>";
             html_data += header;
 
@@ -141,7 +146,8 @@
                 }
 
                 body += "<tr>";
-                body += "<td><img class='player_img' src='" + row.playerImageUrl + "'></td>";
+                // body += "<td><img class='player_img' src='" + row.playerImageUrl + "'></td>";
+                body += "<td><img class='player_img' src='../assets/player.png'></td>";
                 body += "<td class='rank'><span class='number'>" + row.rank + "</span></td>";
                 body += "<td class='score'><span class='number mg_r_score'>" + row.score + "</span></td>";
                 body += "<td class='point'><span class='number mg_r_point'>" + point + "</span></td>";
@@ -154,4 +160,4 @@
         }
     </script>
 </body>
-</html> 
+</html>

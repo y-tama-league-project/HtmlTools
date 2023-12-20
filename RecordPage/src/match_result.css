@@ -4,7 +4,7 @@
 }
 
 .container {
-    width:1600px;
+    width:1920px;
     aspect-ratio: 16/9;
     background-image: url(../assets/background.jpg);
 }
@@ -14,7 +14,7 @@
     justify-content: space-around;
     padding-top: 40px;
     font-family: 'Mochiy Pop One', sans-serif;
-    font-size: 80px;
+    font-size: 96px;
     color: #cacaca;
     text-shadow:
         1px 0px 5px #000000,
@@ -53,13 +53,14 @@ table {
 }
 
 th {
-    font-size: 30px;
+    font-size: 36px;
 }
 
 th:not(:first-child) {
     background-color: #00000080;
     font-family: 'Noto Sans JP', sans-serif;
-    color: #ffffff;
+    color: #f0f0f0;
+    text-shadow: 2px 2px 2px #22215f;
 }
 
 th.width15 {
@@ -74,8 +75,8 @@ th.width30 {
     width: 30%;
 }
 
-th.width50 {
-    width: 50%;
+th.width45 {
+    width: 45%;
 }
 
 td:not(:first-child) {
@@ -83,7 +84,7 @@ td:not(:first-child) {
 }
 
 td {
-    font-size: 80px;
+    font-size: 96px;
 }
 
 td.rank {
@@ -96,14 +97,14 @@ td.score {
 
 td.point {
     text-align: right;
-    font-size: 50px;
+    font-size: 66px;
     vertical-align: bottom;
-    padding-bottom: 10px;
+    padding-bottom: 14px;
 }
 
 img.player_img {
-    width: 100%;
-    height: auto;
+    width: 780px;
+    height: 166px;
     vertical-align: bottom;
 }
 
@@ -120,7 +121,7 @@ td span.mg_r_score {
 }
 
 td span.mg_r_point {
-    margin-right: 50px;
+    margin-right: 100px;
 }
 
 button.save_image {
