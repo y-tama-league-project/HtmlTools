@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./player_comments.css">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Mochiy+Pop+One&family=Noto+Sans+JP&family=Zen+Antique&display=swap" rel="stylesheet">
+
+    <!-- Swipe.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</head>
+<body>
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <!-- <div class="swiper-slide">Slide 1</div>
+            <div class="swiper-slide">Slide 2</div>
+            <div class="swiper-slide">Slide 3</div>
+            <div class="swiper-slide">Slide 4</div>
+            <div class="swiper-slide">Slide 5</div> -->
+        </div>
+    </div>
+
+    <script>
+        // パラメータを取得してスプレッドシートから取得する試合結果の範囲を指定する
+        let url = new URL(window.location.href);
+        let params = url.searchParams;
+        let match = params.get('match');
+
+        // エラー処理
+        if (!match) {
+            alert("URLに'match'パラメータを入力してください。");
+            throw new Error();
+        }
+
+        let api_url = "https://script.google.com/macros/s/AKfycbwO8WfZ68peP_EA-ANZXsMFQqygFcxEmpXt0HG8FaP-E6BzgH1uLH-cNf14KdgQQhNW/exec"
+
+        // APIを叩く
+        fetch(api_url)
+            .then(function(fetch_data) {
+                return fetch_data.json();
+            })
+            .then(function(json) {
+                let comment_data = [];
+
+                // 必要な試合分だけのデータに間引く
+                for (let i in json) {
+                    // 指定したパラメータの試合以外は無視する
+                    if (!(json[i].match == match)) { continue }
+                    comment_data.push(json[i]);
+                }
+
+                makeComments(comment_data);
+
+                // Swiper.jsで自動スライドショーにする
+                const swiper = new Swiper(".swiper", {
+                    autoplay: {
+                        delay: 10000,
+                    },
+                    speed: 1000,
+                    loop: true,
+                });
+            });
+
+        // テーブル部分を作成
+        // tableタグだと実装が難しいため使わない
+        function makeComments(data) {
+            let swiper_div = $('.swiper-wrapper');
+            let html_data = "";
+
+            // let body = "<div class='body'>";
+            for (let i=0; i < data.length; i++) {
+                let table_choice;
+                switch(data[i].table) {
+                    case 1:
+                        table_choice = "配信卓";
+                        break;
+                    case 2:
+                        table_choice = "B卓";
+                        break;
+                    case 3:
+                        table_choice = "C卓";
+                        break;
+                }
+
+                html_data += "<div class='swiper-slide'>" +
+                    "<div class='player_area'>" +
+                        "<img class='player_img' src='" + data[i].playerImageUrl + "'>" +
+                        "<div class='table'><span class='table_text'>" + table_choice + "</span></div>" +
+                        "<p class='team_name'>" + data[i].teamName + "</p>" +
+                        "<p class='player_name'>" + data[i].playerName + "</p>" +
+                        "<p class='comment'>" + data[i].comment + "</p>" +
+                    "</div>" +
+                    "</div>";
+            }
+
+            swiper_div.append(html_data);
+        }
+    </script>
+</body>
+</html>
