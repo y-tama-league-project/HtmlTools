@@ -20,11 +20,6 @@
 <body>
     <div class="swiper">
         <div class="swiper-wrapper">
-            <!-- <div class="swiper-slide">Slide 1</div>
-            <div class="swiper-slide">Slide 2</div>
-            <div class="swiper-slide">Slide 3</div>
-            <div class="swiper-slide">Slide 4</div>
-            <div class="swiper-slide">Slide 5</div> -->
         </div>
     </div>
 
@@ -59,23 +54,24 @@
 
                 makeComments(comment_data);
 
+                // resizePlayerInfo(); // 一旦なしで（今後使うかも）
+                resizeComment();
+
                 // Swiper.jsで自動スライドショーにする
                 const swiper = new Swiper(".swiper", {
                     autoplay: {
                         delay: 10000,
                     },
-                    speed: 1000,
+                    speed: 900,
                     loop: true,
                 });
             });
 
-        // テーブル部分を作成
-        // tableタグだと実装が難しいため使わない
+        // 意気込み部分を作成
         function makeComments(data) {
             let swiper_div = $('.swiper-wrapper');
             let html_data = "";
 
-            // let body = "<div class='body'>";
             for (let i=0; i < data.length; i++) {
                 let table_choice;
                 switch(data[i].table) {
@@ -103,6 +99,30 @@
 
             swiper_div.append(html_data);
         }
+
+        // 意気込みを長文で入力している場合はサイズを小さくする処理
+        function resizeComment() {
+            $('.comment').each(function(i, elm) {
+                resizeText(elm, 24);
+            });
+        }
+
+        function resizePlayerInfo() {
+            $('.team_name').each(function(i, elm) {
+                resizeText(elm, 18);
+            });
+            $('.player_name').each(function(i, elm) {
+                resizeText(elm, 26);
+            });
+        }
+
+        // 範囲に収まるように文字サイズを小さくする
+        function resizeText(element, fontSize) {
+            for(let size = fontSize; element.getBoundingClientRect().height < element.scrollHeight && size > 2; size -= 2) {
+                element.style.fontSize = size + "px";
+            }
+        }
+
     </script>
 </body>
 </html>

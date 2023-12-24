@@ -5,15 +5,14 @@
 
 .swiper {
     width: 428px;
-    /* width: 100%; */
     height: 381px;
     background-color: #000000CC;
 }
 
 .player_area {
     display: grid;
-    grid-template-rows: 50px 50px 110px 1fr;
-    grid-template-columns: 220px 1fr;
+    grid-template-rows: 60px 35px 85px 1fr;
+    grid-template-columns: 185px 1fr;
     grid-template-areas:
         "image table"
         "image team"
@@ -22,12 +21,11 @@
     width: 100%;
     height: 100%;
     color: #f0f0f0;
-    /* background-color: #00ff0080; */
 }
 
 .player_img {
     grid-area: image;
-    width: 180px;
+    width: 140px;
     height: auto;
     margin: auto;
     background-color: #ffffff;
@@ -37,20 +35,22 @@
 .table {
     grid-area: table;
     font-family: 'Noto Sans JP', sans-serif;
-    font-size: 22px;
+    font-size: 20px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content:flex-end;
 }
 
 .table_text {
-    margin-right: 10px;
+    margin-right: 12px;
+    margin-bottom: 10px;
     border: 2px solid;
-    border-color: transparent transparent red transparent;
+    border-color: transparent transparent #ff7f7f transparent;
 }
 
 .team_name {
     grid-area: team;
+    color: #ffc1c1;
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 18px;
     margin-right: 10px;
@@ -61,12 +61,16 @@
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 26px;
     margin-right: 10px;
+    white-space: pre-wrap;
 }
 
 .comment {
     grid-area: comment;
+    width: 380px;
+    height: 176px;
     font-family: 'Zen Antique', sans-serif;
-    font-size: 20px;
+    font-size: 24px;
     white-space: pre-wrap;
-    margin: 0px 20px;
+    margin: 0px 24px;
+    margin-bottom: 10px;
 }
