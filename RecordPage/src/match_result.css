@@ -52,13 +52,10 @@ table {
     margin-top: 20px;
 }
 
-th {
-    font-size: 36px;
-}
-
 th:not(:first-child) {
     background-color: #00000080;
-    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 46px;
+    font-family: 'Impact', sans-serif;
     color: #f0f0f0;
     text-shadow: 2px 2px 2px #22215f;
 }
