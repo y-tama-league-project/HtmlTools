@@ -67,7 +67,7 @@
 .comment {
     grid-area: comment;
     width: 380px;
-    height: 176px;
+    height: 211px;
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 26px;
     white-space: pre-wrap;
