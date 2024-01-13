@@ -54,7 +54,7 @@
 
                 makeComments(comment_data);
 
-                // resizePlayerInfo(); // 一旦なしで（今後使うかも）
+                resizePlayerInfo();
                 resizeComment();
 
                 // Swiper.jsで自動スライドショーにする
@@ -103,16 +103,16 @@
         // 意気込みを長文で入力している場合はサイズを小さくする処理
         function resizeComment() {
             $('.comment').each(function(i, elm) {
-                resizeText(elm, 24);
+                resizeText(elm, 26);
             });
         }
 
         function resizePlayerInfo() {
             $('.team_name').each(function(i, elm) {
-                resizeText(elm, 18);
+                resizeText(elm, 24);
             });
             $('.player_name').each(function(i, elm) {
-                resizeText(elm, 26);
+                resizeText(elm, 28);
             });
         }
 

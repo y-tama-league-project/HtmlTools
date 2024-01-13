@@ -11,7 +11,7 @@
 
 .player_area {
     display: grid;
-    grid-template-rows: 60px 35px 85px 1fr;
+    grid-template-rows: 60px 35px 65px 1fr;
     grid-template-columns: 185px 1fr;
     grid-template-areas:
         "image table"
@@ -20,7 +20,7 @@
         "comment comment";
     width: 100%;
     height: 100%;
-    color: #f0f0f0;
+    color: #ffffff;
 }
 
 .player_img {
@@ -35,7 +35,7 @@
 .table {
     grid-area: table;
     font-family: 'Noto Sans JP', sans-serif;
-    font-size: 20px;
+    font-size: 24px;
     display: flex;
     align-items: flex-end;
     justify-content:flex-end;
@@ -52,14 +52,14 @@
     grid-area: team;
     color: #ffc1c1;
     font-family: 'Noto Sans JP', sans-serif;
-    font-size: 18px;
+    font-size: 24px;
     margin-right: 10px;
 }
 
 .player_name {
     grid-area: player;
     font-family: 'Noto Sans JP', sans-serif;
-    font-size: 26px;
+    font-size: 28px;
     margin-right: 10px;
     white-space: pre-wrap;
 }
@@ -68,8 +68,8 @@
     grid-area: comment;
     width: 380px;
     height: 176px;
-    font-family: 'Zen Antique', sans-serif;
-    font-size: 24px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 26px;
     white-space: pre-wrap;
     margin: 0px 24px;
     margin-bottom: 10px;
