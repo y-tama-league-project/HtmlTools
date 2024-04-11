@@ -43,7 +43,8 @@
                 return fetch_data.json();
             })
             .then(function(json) {
-                makeComments(json.comments.filter(x => x.match == match));
+                // makeComments(json.comments.filter(x => x.match == match));
+                makeAds(json.ads);
 
                 resizePlayerInfo();
                 resizeComment();
@@ -84,6 +85,21 @@
                         "<p class='team_name'>" + data[i].teamName + "</p>" +
                         "<p class='player_name'>" + data[i].playerName + "</p>" +
                         "<p class='comment'>" + data[i].comment + "</p>" +
+                    "</div>" +
+                    "</div>";
+            }
+
+            swiper_div.append(html_data);
+        }
+
+        function makeAds(data) {
+            let swiper_div = $('.swiper-wrapper');
+            let html_data = "";
+
+            for (const ads in data) {
+                html_data += "<div class='swiper-slide'>" +
+                    "<div class='player_area'>" +
+                        "<img class='player_img' src='" + ads.imageUrl + "'>" +
                     "</div>" +
                     "</div>";
             }
