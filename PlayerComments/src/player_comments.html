@@ -35,7 +35,7 @@
             throw new Error();
         }
 
-        let api_url = "https://script.google.com/macros/s/AKfycbzJRue9NJIOaySU9dGVPMPOeBQiM4a_X-OYCD26TQXgU4tmvA04akovSq_Cd1BU9vtx/exec"
+        let api_url = "https://script.google.com/macros/s/AKfycbzJRue9NJIOaySU9dGVPMPOeBQiM4a_X-OYCD26TQXgU4tmvA04akovSq_Cd1BU9vtx/exec?test=1"
 
         // APIを叩く
         fetch(api_url)
@@ -46,7 +46,7 @@
                 let comment_data = [];
 
                 // 必要な試合分だけのデータに間引く
-                for (let i in json) {
+                for (let i in json.comments) {
                     // 指定したパラメータの試合以外は無視する
                     if (!(json[i].match == match)) { continue }
                     comment_data.push(json[i]);
