@@ -43,16 +43,7 @@
                 return fetch_data.json();
             })
             .then(function(json) {
-                let comment_data = [];
-
-                // 必要な試合分だけのデータに間引く
-                for (let i in json.comments) {
-                    // 指定したパラメータの試合以外は無視する
-                    if (!(json[i].match == match)) { continue }
-                    comment_data.push(json[i]);
-                }
-
-                makeComments(comment_data);
+                makeComments(json.comments.filter(x => x.match === match));
 
                 resizePlayerInfo();
                 resizeComment();
