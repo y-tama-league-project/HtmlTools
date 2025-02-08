@@ -131,6 +131,9 @@
                     todayPointOption = "class='today_point_worst'";
                 }
 
+                console.log(`${data[i].rank} == ${bestTeamRank}`);
+                console.log(`${data[i].rank} == ${worstTeamRank}`);
+
                 body += "<div class='row'>" +
                     `<img class='team_img' src='${data[i].teamImageUrl}'>` +
                     `<div class='before_rank'>${before_rank}</div>` +
