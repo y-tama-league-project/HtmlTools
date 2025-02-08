@@ -83,9 +83,6 @@
                 }
             }
 
-            console.log(bestTeamRank);
-            console.log(worstTeamRank);
-
             for (let i in data) {
                 // ポイントに符号追加
                 let today_point;
@@ -131,16 +128,13 @@
                     todayPointOption = "class='today_point_worst'";
                 }
 
-                console.log(`${data[i].rank} == ${bestTeamRank}`);
-                console.log(`${data[i].rank} == ${worstTeamRank}`);
-
                 body += "<div class='row'>" +
                     `<img class='team_img' src='${data[i].teamImageUrl}'>` +
                     `<div class='before_rank'>${before_rank}</div>` +
                     `<img class='arrow' src='${arrow_img}'>` +
                     `<div class='rank'>${data[i].rank}</div>` +
                     `<div class='total'>${data[i].totalPoint.toFixed(1)}</div>` +
-                    `<div class='today_point' ${todayPointOption}>${today_point}</div>` +
+                    `<div class='today_point ${todayPointOption}'>${today_point}</div>` +
                     `<div class='diff'>${diff_point}</div>` +
                     "</div>";
             }
