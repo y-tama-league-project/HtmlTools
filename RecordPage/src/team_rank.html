@@ -60,14 +60,28 @@
 
             let header = "<div class='header'>" +
                 "<span class='h_rank'>順位</span>" +
-                "<span class='h_team'>チーム</span>" +
+                "<span class='h_team'>チーム名</span>" +
                 "<span class='h_total'>累計</span>" +
                 "<span class='h_today'>本日</span>" +
-                "<span class='h_diff'>差</span>" +
+                "<span class='h_diff'>上位との差</span>" +
                 "</div>";
             html_data += header;
 
             let body = "<div class='body'>"
+            let bestTeamPoint = null;
+            let bestTeamRank = 0;
+            let worstTeamPoint = null;
+            let worstTeamRank = 0;
+            for (const p of data) {
+                if (bestTeamPoint == null || p.todayPoint > bestTeamPoint) {
+                    bestTeamPoint = p.todayPoint;
+                    bestTeamRank = p.rank;
+                }
+                if (worstTeamPoint == null || p.todayPoint < worstTeamPoint) {
+                    worstTeamPoint = p.todayPoint;
+                    worstTeamRank = p.rank;
+                }
+            }
             for (let i in data) {
                 // ポイントに符号追加
                 let today_point;
@@ -105,14 +119,22 @@
                     arrow_img = "../assets/rank_no_change.png";
                 }
 
+                let todayPointOption = "";
+                if (data[i].rank == bestTeamRank) {
+                    todayPointOption = "class='today_point_best";
+                }
+                else if (data[i].rank == worstTeamRank) {
+                    todayPointOption = "class='today_point_worst";
+                }
+
                 body += "<div class='row'>" +
-                    "<img class='team_img' src='" + data[i].teamImageUrl + "'>" +
-                    "<div class='before_rank'>" + before_rank + "</div>" +
-                    "<img class='arrow' src='" + arrow_img + "'>" +
-                    "<div class='rank'>" + data[i].rank + "</div>" +
-                    "<div class='total'>" + data[i].totalPoint.toFixed(1) + "</div>" +
-                    "<div class='today_point'>" + today_point + "</div>" +
-                    "<div class='diff'>" + diff_point + "</div>" +
+                    `<img class='team_img' src='${data[i].teamImageUrl}'>` +
+                    `<div class='before_rank'>${before_rank}</div>` +
+                    `<img class='arrow' src='${arrow_img}'>` +
+                    `<div class='rank'>${data[i].rank}</div>` +
+                    `<div class='total'>${data[i].totalPoint.toFixed(1)}</div>` +
+                    `<div class='today_point' ${todayPointOption}>${today_point}</div>` +
+                    `<div class='diff'>${diff_point}</div>` +
                     "</div>";
             }
 

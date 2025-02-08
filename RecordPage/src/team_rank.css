@@ -123,6 +123,14 @@
     vertical-align: bottom;
 }
 
+.today_point_best {
+    color: #50ff5c;
+}
+
+.today_point_worst {
+    color: #ff4c4c;
+}
+
 .diff {
     position: absolute;
     width: 15%;
