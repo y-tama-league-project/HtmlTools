@@ -44,7 +44,7 @@
                 return fetch_data.json();
             })
             .then(function(json) {
-                makeComments(json.contents.comments.filter(content => content.match === match));
+                makeComments(json.contents.comments.filter(content => content.match == match));
 
                 resizePlayerInfo();
                 resizeComment();
