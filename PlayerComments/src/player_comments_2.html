@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./player_comments.css">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Mochiy+Pop+One&family=Noto+Sans+JP&family=Zen+Antique&display=swap" rel="stylesheet">
+
+    <!-- Swipe.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</head>
+<body>
+    <div class="swiper">
+        <div class="swiper-wrapper">
+        </div>
+    </div>
+
+    <script>
+        // パラメータを取得してスプレッドシートから取得する試合結果の範囲を指定する
+        const url = new URL(window.location.href);
+        const params = url.searchParams;
+        const match = params.get('match');
+
+        // エラー処理
+        if (!match) {
+            alert("URLに'match'パラメータを入力してください。");
+            throw new Error();
+        }
+
+        // GAS Project : https://script.google.com/home/projects/1ZWitEtYNUt55uNnc9oJU7Dz7iwfSv0WY-HAfzYzl4krXc5Qb5G9D0y7f
+        const api_url = "https://script.google.com/macros/s/AKfycbzDzfTehawROhitJl-fIw4I7Vw8oRup-qFmJ4Lrqvcvt8DQsa2K9WnuT5pj5NqzFX-f/exec?p=game/get-player-comments"
+
+        // APIを叩く
+        fetch(api_url)
+            .then(function(fetch_data) {
+                return fetch_data.json();
+            })
+            .then(function(json) {
+                makeComments(json.comments.filter(comment => comment.match === match));
+
+                resizePlayerInfo();
+                resizeComment();
+
+                // Swiper.jsで自動スライドショーにする
+                const swiper = new Swiper(".swiper", {
+                    autoplay: {
+                        delay: 10000,
+                    },
+                    speed: 900,
+                    loop: true,
+                });
+            });
+
+        // 意気込み部分を作成
+        function makeComments(comments) {
+            let swiper_div = $('.swiper-wrapper');
+            let html_data = "";
+
+            for (const comment of comments) {
+                let table_choice;
+                switch(comment.table) {
+                    case 1:
+                        table_choice = "配信卓";
+                        break;
+                    case 2:
+                        table_choice = "B卓";
+                        break;
+                    case 3:
+                        table_choice = "C卓";
+                        break;
+                }
+
+                html_data += "<div class='swiper-slide'>" +
+                    "<div class='player_area'>" +
+                        "<img class='player_img' src='" + comment.playerImageUrl + "'>" +
+                        "<div class='table'><span class='table_text'>" + table_choice + "</span></div>" +
+                        "<p class='team_name'>" + comment.teamName + "</p>" +
+                        "<p class='player_name'>" + comment.playerName + "</p>" +
+                        "<p class='comment'>" + comment.comment + "</p>" +
+                    "</div>" +
+                    "</div>";
+            }
+
+            swiper_div.append(html_data);
+        }
+
+        // 意気込みを長文で入力している場合はサイズを小さくする処理
+        function resizeComment() {
+            $('.comment').each(function(i, elm) {
+                resizeText(elm, 26);
+            });
+        }
+
+        function resizePlayerInfo() {
+            $('.team_name').each(function(i, elm) {
+                resizeText(elm, 24);
+            });
+            $('.player_name').each(function(i, elm) {
+                resizeText(elm, 28);
+            });
+        }
+
+        // 範囲に収まるように文字サイズを小さくする
+        function resizeText(element, fontSize) {
+            for(let size = fontSize; element.getBoundingClientRect().height < element.scrollHeight && size > 2; size -= 2) {
+                element.style.fontSize = size + "px";
+            }
+        }
+
+    </script>
+</body>
+</html>
