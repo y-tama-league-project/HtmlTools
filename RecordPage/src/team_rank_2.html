@@ -41,8 +41,15 @@
             });
         });
 
+        const url = new URL(window.location.href);
+        const params = url.searchParams;
+        const offset = params.get('offset');
+
         // GAS Project : https://script.google.com/home/projects/1ZWitEtYNUt55uNnc9oJU7Dz7iwfSv0WY-HAfzYzl4krXc5Qb5G9D0y7f
-        const api_url = "https://script.google.com/macros/s/AKfycbzDzfTehawROhitJl-fIw4I7Vw8oRup-qFmJ4Lrqvcvt8DQsa2K9WnuT5pj5NqzFX-f/exec?p=game/get-team-rank"
+        let api_url = "https://script.google.com/macros/s/AKfycbzDzfTehawROhitJl-fIw4I7Vw8oRup-qFmJ4Lrqvcvt8DQsa2K9WnuT5pj5NqzFX-f/exec?p=game/get-team-rank"
+        if (offset) {
+            api_url += `&offset=${offset}`;
+        }
 
         // APIを叩く
         fetch(api_url)
