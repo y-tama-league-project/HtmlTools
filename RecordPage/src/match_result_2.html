@@ -63,8 +63,9 @@
             })
             .then(function(json) {
                 makeTitle(json.contents.section, match, table);
-                if (json.contents.matchResults.length > 0) {
-                    makeTable(json.contents.matchResults.filter(x => x.match == match && x.table == table));
+                const matchResults = json.contents.matchResults.filter(x => x.match == match && x.table == table);
+                if (matchResults.length > 0) {
+                    makeTable(matchResults);
                 }
                 else {
                     let table_div = $('.in_game');
