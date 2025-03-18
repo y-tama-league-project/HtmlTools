@@ -4,6 +4,8 @@
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
     width:1920px;
     aspect-ratio: 16/9;
     background-image: url(../assets/background.jpg);
