@@ -27,6 +27,25 @@
         1px -1px 5px #888888;
 }
 
+.in_game {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -50px;
+    font-family: 'Mochiy Pop One', sans-serif;
+    color: #cacaca;
+    text-shadow:
+        1px 0px 5px #000000,
+        1px 1px 5px #888888,
+        0px 1px 5px #888888,
+        -1px 1px 5px #888888,
+        -1px 0px 5px #888888,
+        -1px -1px 5px #888888,
+        0px -1px 5px #ffffff,
+        1px -1px 5px #888888;
+}
+
 .title div:first-child {
     margin-left: 220px;
 }

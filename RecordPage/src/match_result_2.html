@@ -20,6 +20,7 @@
     <div class="container">
         <div class="title"></div>
         <div class="table_container"></div>
+        <div class="in_game"></div>
     </div>
 
     <button class="save_image" id="save_image">画像保存</button>
@@ -66,7 +67,7 @@
                     makeTable(json.contents.matchResults.filter(x => x.match == match && x.table == table));
                 }
                 else {
-                    let table_div = $('.table_container');
+                    let table_div = $('.in_game');
                     table_div.append("<div>対局中</div>");
                 }
             });
