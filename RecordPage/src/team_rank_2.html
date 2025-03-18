@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./team_rank.css">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Mochiy+Pop+One&family=Noto+Sans+JP&family=Zen+Antique&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Zen+Kaku+Gothic+Antique&display=swap" rel="stylesheet">
+
+
+    <!-- html2canvas -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="table_container"></div>
+    </div>
+
+    <button class="save_image" id="save_image">画像保存</button>
+    <a id="get_image" href="" style="display: none"></a>
+
+    <script>
+        // ダウンロード処理
+        const output_button = $("#save_image");    //ボタン
+        const element = $(".container")[0];        //画像化したい要素
+        const get_image = $("#get_image")[0];      //ダウンロード用隠しリンク
+
+        // 画像化してダウンロード
+        output_button.on('click', () => {
+            html2canvas(element, {proxy: true, useCORS: true}).then(canvas => {
+                get_image.setAttribute("href", canvas.toDataURL());
+                get_image.setAttribute("download", "team_rank.png");
+                get_image.click();
+            });
+        });
+
+        // GAS Project : https://script.google.com/home/projects/1ZWitEtYNUt55uNnc9oJU7Dz7iwfSv0WY-HAfzYzl4krXc5Qb5G9D0y7f
+        const api_url = "https://script.google.com/macros/s/AKfycbzDzfTehawROhitJl-fIw4I7Vw8oRup-qFmJ4Lrqvcvt8DQsa2K9WnuT5pj5NqzFX-f/exec?p=game/get-team-rank"
+
+        // APIを叩く
+        fetch(api_url)
+            .then(function(fetch_data) {
+                return fetch_data.json();
+            })
+            .then(function(json) {
+                makeTable(json.contents.teamRanks)
+            });
+
+        // テーブル部分を作成
+        // tableタグだと実装が難しいため使わない
+        function makeTable(team_ranks) {
+            let table_div = $('.table_container');
+            let html_data = "";
+
+            let header = "<div class='header'>" +
+                "<span class='h_rank'>順位</span>" +
+                "<span class='h_team'>チーム名</span>" +
+                "<span class='h_total'>累計</span>" +
+                "<span class='h_today'>本日</span>" +
+                "<span class='h_diff'>上位との差</span>" +
+                "</div>";
+            html_data += header;
+
+            let body = "<div class='body'>"
+            let bestTeamPoint = null;
+            let bestTeamRank = 0;
+            let worstTeamPoint = null;
+            let worstTeamRank = 0;
+            // デイリーのベストとワーストを取得
+            for (const p of team_ranks) {
+                if (bestTeamPoint == null || p.todayPoint > bestTeamPoint) {
+                    bestTeamPoint = p.todayPoint;
+                    bestTeamRank = p.rank;
+                }
+                if (worstTeamPoint == null || p.todayPoint < worstTeamPoint) {
+                    worstTeamPoint = p.todayPoint;
+                    worstTeamRank = p.rank;
+                }
+            }
+
+            for (const team_rank of team_ranks) {
+                // ポイントに符号追加
+                let today_point;
+                if (team_rank.todayPoint >= 0) {
+                    today_point = "+" + team_rank.todayPoint.toFixed(1);
+                }
+                else {
+                    today_point = team_rank.todayPoint.toFixed(1);
+                }
+
+                // 1位のチームは―表記
+                let diff_point;
+                if (team_rank.rank == 1) {
+                    diff_point = "―";
+                }
+                else {
+                    diff_point = team_rank.diffPoint.toFixed(1);
+                }
+
+                // 前回の順位によって矢印と文字色変更
+                let arrow_img;
+                let before_rank = team_rank.beforeRank;
+                if (before_rank == 0) {
+                    // 第1節は前回の順位は"-"と表示する
+                    arrow_img = "../assets/rank_no_change.png";
+                    before_rank = "-";
+                }
+                else if (before_rank < team_rank.rank) {
+                    arrow_img = "../assets/rank_down.png";
+                }
+                else if (before_rank > team_rank.rank) {
+                    arrow_img = "../assets/rank_up.png";
+                }
+                else {
+                    arrow_img = "../assets/rank_no_change.png";
+                }
+
+                let todayPointOption = "";
+                if (team_rank.rank == bestTeamRank) {
+                    todayPointOption = "today_point_best";
+                }
+                else if (team_rank.rank == worstTeamRank) {
+                    todayPointOption = "today_point_worst";
+                }
+
+                body += "<div class='row'>" +
+                    `<img class='team_img' src='${team_rank.teamImageUrl}'>` +
+                    `<div class='before_rank'>${before_rank}</div>` +
+                    `<img class='arrow' src='${arrow_img}'>` +
+                    `<div class='rank'>${team_rank.rank}</div>` +
+                    `<div class='total'>${team_rank.totalPoint.toFixed(1)}</div>` +
+                    `<div class='today_point ${todayPointOption}'>${today_point}</div>` +
+                    `<div class='diff'>${diff_point}</div>` +
+                    "</div>";
+            }
+
+            body += "</div>";
+            html_data += body;
+
+            table_div.append(html_data);
+        }
+    </script>
+</body>
+</html>
