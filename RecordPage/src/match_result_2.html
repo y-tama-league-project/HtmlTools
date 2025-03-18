@@ -71,9 +71,8 @@
                 return fetch_data.json();
             })
             .then(function(json) {
-                const matchResults = json.contents.matchResults.filter(x => x.match == match && x.table == table);
-                makeTitle(matchResults[0].section, matchResults[0].match, matchResults[0].table);
-                makeTable(matchResults);
+                makeTitle(json.contents.section, match, table);
+                makeTable(json.contents.matchResults.filter(x => x.match == match && x.table == table));
             });
 
         // タイトル部分を作成
