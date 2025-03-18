@@ -43,8 +43,8 @@
         // パラメータを取得してスプレッドシートから取得する試合結果の範囲を指定する
         const url = new URL(window.location.href);
         const params = url.searchParams;
-        const match = params.get('match');
-        const table = params.get('table');
+        const match = Number(params.get('match'));
+        const table = Number(params.get('table'));
 
         // エラー処理
         if (!match || !table) {
