@@ -71,18 +71,19 @@
                 return fetch_data.json();
             })
             .then(function(json) {
-                const matchResult = json.contents.matchResults.find(content => content.match == match && content.table == table);
-                makeTitle(matchResult.section, matchResult.match, matchResult.table);
-                makeTable(matchResult);
+                const matchResults = json.contents.matchResults.filter(x => x.match == match && x.table == table);
+                const [section, match, table] = [matchResults[0].section, matchResults[0].match, matchResults[0].table];
+                makeTitle(section, match, table);
+                makeTable(matchResults);
             });
 
         // タイトル部分を作成
-        function makeTitle(section_num, match_num, table_num) {
+        function makeTitle(section, match, table) {
             let title = $(".title");
             let html_data = "<div>";
 
             let table_choice;
-            switch(table_num) {
+            switch(table) {
                 case 1:
                     table_choice = "配信卓";
                     break;
@@ -94,10 +95,10 @@
                     break;
             }
 
-            html_data += "第<span class='title_number'>" + section_num + "</span>節";
+            html_data += "第<span class='title_number'>" + section + "</span>節";
             html_data += "</div>";
             html_data += "<div>";
-            html_data += "第<span class='title_number'>" + match_num + "</span>試合";
+            html_data += "第<span class='title_number'>" + match + "</span>試合";
             html_data += "</div>";
             html_data += "<div>" + table_choice +"結果</div>";
 
@@ -105,7 +106,7 @@
         }
 
         // テーブル部分を作成
-        function makeTable(data) {
+        function makeTable(matchResults) {
             let table_div = $('.table_container');
             let html_data = "<table>";
 
@@ -120,19 +121,19 @@
 
             // tbody作成
             let body = "<tbody>";
-            for(const row of data) {
+            for(const result of matchResults) {
                 let point;
-                if (row.point >= 0) {
-                    point = "+" + row.point.toFixed(1);
+                if (result.point >= 0) {
+                    point = "+" + result.point.toFixed(1);
                 }
                 else{
-                    point = row.point.toFixed(1);
+                    point = result.point.toFixed(1);
                 }
 
                 body += "<tr>";
-                body += "<td><img class='player_img' src='" + row.playerImageUrl + "'></td>";
-                body += "<td class='rank'><span class='number'>" + row.rank + "</span></td>";
-                body += "<td class='score'><span class='number mg_r_score'>" + row.score + "</span></td>";
+                body += "<td><img class='player_img' src='" + result.playerImageUrl + "'></td>";
+                body += "<td class='rank'><span class='number'>" + result.rank + "</span></td>";
+                body += "<td class='score'><span class='number mg_r_score'>" + result.score + "</span></td>";
                 body += "<td class='point'><span class='number mg_r_point'>" + point + "</span></td>";
                 body += "</tr>";
             }
