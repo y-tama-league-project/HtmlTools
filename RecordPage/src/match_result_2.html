@@ -41,21 +41,11 @@
         });
 
         // パラメータを取得してスプレッドシートから取得する試合結果の範囲を指定する
-        let url = new URL(window.location.href);
-        let params = url.searchParams;
-        let match = params.get('match');
-        let table = params.get('table');
-        switch(table) {
-            case "A":
-                table = 1;
-                break;
-            case "B":
-                table = 2;
-                break;
-            case "C":
-                table = 3;
-                break;
-        }
+        const url = new URL(window.location.href);
+        const params = url.searchParams;
+        const match = params.get('match');
+        const table = params.get('table');
+
         // エラー処理
         if (!match || !table) {
             alert("URLに'match'および'table'パラメータを入力してください。");
@@ -72,7 +62,13 @@
             })
             .then(function(json) {
                 makeTitle(json.contents.section, match, table);
-                makeTable(json.contents.matchResults.filter(x => x.match == match && x.table == table));
+                if (json.contents.matchResults.length > 0) {
+                    makeTable(json.contents.matchResults.filter(x => x.match == match && x.table == table));
+                }
+                else {
+                    let table_div = $('.table_container');
+                    table_div.append("<div>対局中</div>");
+                }
             });
 
         // タイトル部分を作成
