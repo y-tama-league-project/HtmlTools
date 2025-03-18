@@ -72,8 +72,7 @@
             })
             .then(function(json) {
                 const matchResults = json.contents.matchResults.filter(x => x.match == match && x.table == table);
-                const [section, match, table] = [matchResults[0].section, matchResults[0].match, matchResults[0].table];
-                makeTitle(section, match, table);
+                makeTitle(matchResults[0].section, matchResults[0].match, matchResults[0].table);
                 makeTable(matchResults);
             });
 
